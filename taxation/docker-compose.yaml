@@ -1,0 +1,33 @@
+version: "3.8"
+
+services:
+  # Server
+  api:
+    restart: always
+    build:
+      context: ./server
+    container_name: api_container_taxation
+    command: >
+      sh -c "python manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - ./server:/server
+    ports:
+      - "8000:8000"
+    env_file:
+      - ./.env
+
+  client:
+    restart: unless-stopped
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    container_name: client_container_taxation
+    command: sh -c "npm i axios && npm install --legacy-peer-deps && npm start"
+    volumes:
+      - ./client:/client
+    ports:
+      - "3000:3000"
+    depends_on:
+      - api
+    env_file:
+      - ./.client.env
