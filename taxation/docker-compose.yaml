@@ -13,8 +13,6 @@ services:
       - ./server:/server
     ports:
       - "8000:8000"
-    env_file:
-      - ./.env
 
   client:
     restart: unless-stopped
@@ -29,5 +27,3 @@ services:
       - "3000:3000"
     depends_on:
       - api
-    env_file:
-      - ./.client.env
